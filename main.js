@@ -53,6 +53,5 @@ module.exports.loop = function()
     else if (repairerPop < minRepairers && Game.spawns.Home1.energy >= 300)
     {
         var newName = Game.spawns.Home1.customCreep(spawnEnergy, "repairer");
-        console.log("Testing!");
     }
 }
