@@ -1,12 +1,13 @@
 var roleHarvester = require('role.harvester');
 var roleRepairer = require('role.repairer');
+var conTower = require('atk.tower');
 
 require('prototype.spawn')();
 
 module.exports.loop = function()
 {
-    var minHarvesters = 10;
-    var minRepairers = 5;
+    var minHarvesters = 5;
+    var minRepairers = 3;
     
     var spawnEnergy = Game.spawns.Home1.room.energyCapacityAvailable;
     
@@ -21,6 +22,15 @@ module.exports.loop = function()
     
     var harvesterPop = _.sum(Game.creeps, (c) => c.memory.role == "harvester");
     var repairerPop = _.sum(Game.creeps, (c) => c.memory.role == "repairer");
+    
+    var towers = Game.rooms.W22N41.find(FIND_STRUCTURES, {
+        filter: (t) => t.structureType == STRUCTURE_TOWER
+    });
+    
+    for (let tower of towers)
+    {
+        conTower.run(tower);
+    }
     
 	for (let name in Game.creeps)
 	{
@@ -41,16 +51,16 @@ module.exports.loop = function()
 	    }
 	}
 	
-	if (harvesterPop < minHarvesters && Game.spawns.Home1.energy >= 300)
+	if (harvesterPop < minHarvesters)
     {
         var newName = Game.spawns.Home1.customCreep(spawnEnergy, "harvester");
         
-        if (newName == ERR_NOT_ENOUGH_ENERGY && harvesterPop == 0)
+        if (harvesterPop == 0)
         {
-            newName = Game.spawns.Home1.customCreep(Game.spawns.Home1.energyAvailable, "harvester");
+            newName = Game.spawns.Home1.customCreep(Game.spawns.Home1.room.energyAvailable, "harvester");
         }
     }
-    else if (repairerPop < minRepairers && Game.spawns.Home1.energy >= 300)
+    else if (repairerPop < minRepairers)
     {
         var newName = Game.spawns.Home1.customCreep(spawnEnergy, "repairer");
     }

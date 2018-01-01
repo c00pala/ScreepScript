@@ -5,7 +5,6 @@ module.exports = function() {
         {
             if (roleName == "harvester")
             {
-                Memory.harvesterCount++;
                 var numOfParts = Math.floor(energy / 200)
                 var body = [];
                 
@@ -26,19 +25,22 @@ module.exports = function() {
                 
                 if (rnd >= 5)
                 {
-                    var newName = this.createCreep(body, "Worker #" + Memory.harvesterCount + " - v" + body.length, {role: roleName, gathering: false, ungrading: false, canBuild: false});
+                    var newName = this.createCreep(body, "Worker #" + Memory.harvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, canBuild: false});
                 }
                 else
                 {
-                    var newName = this.createCreep(body, "Worker #" + Memory.harvesterCount + " - v" + body.length, {role: roleName, gathering: false, ungrading: false, canBuild: true});
+                    var newName = this.createCreep(body, "Worker #" + Memory.harvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, canBuild: true});
                 }
                 
                 console.log("Created new harvester creep: " + newName);
+                if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
+                {
+                    Memory.harvesterCount++;
+                }
                 return newName;
             }
             else if (roleName == "repairer")
             {
-                Memory.repairerCount++;
                 var numOfParts = Math.floor(energy / 200)
                 var body = [];
                 
@@ -55,8 +57,13 @@ module.exports = function() {
                     body.push(MOVE);
                 }
                 
-                var newName = this.createCreep(body, "Repairer #" + Memory.repairerCount + " - v" + body.length, {role: roleName, gathering: false});
+                var newName = this.createCreep(body, "Repairer #" + Memory.repairerCount + " - mk" + body.length, {role: roleName, gathering: false});
                 console.log("Created new repairer creep: " + newName);
+                if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
+                {
+                    Memory.repairerCount++;
+                }
+                
                 return newName;
             }
         };
