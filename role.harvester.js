@@ -11,11 +11,11 @@ module.exports = {
     	{
     	    creep.memory.gathering = false;
     	}
-    	
+
     	if (creep.memory.gathering == false)
     	{
     	    var closestConstSite = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
-    	    
+
     	    if ((closestConstSite != undefined) && creep.room.energyAvailable >= creep.room.energyCapacityAvailable && creep.memory.canBuild == true)
     	    {
     	        if (creep.build(closestConstSite) == ERR_NOT_IN_RANGE)
@@ -28,11 +28,11 @@ module.exports = {
     	        if (creep.memory.upgrading == false)
         	    {
         	        var energyStructure = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-        	            filter: (e) => 
+        	            filter: (e) =>
         	            (e.structureType == STRUCTURE_SPAWN || e.structureType == STRUCTURE_EXTENSION || e.structureType == STRUCTURE_TOWER)
         	            && e.energy < e.energyCapacity
         	        });
-        	        
+
         	        if (energyStructure != undefined)
         	        {
         	            if (creep.transfer(energyStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
@@ -43,11 +43,11 @@ module.exports = {
         	        else
         	        {
         	            var containerStructure = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-    	                filter: (s) => 
+    	                filter: (s) =>
     	                s.structureType == STRUCTURE_CONTAINER
     	                && s.store[RESOURCE_ENERGY] < s.storeCapacity
         	            });
-        	            
+
         	            if (containerStructure != undefined)
         	            {
         	                if (creep.transfer(containerStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
@@ -66,7 +66,7 @@ module.exports = {
         	        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
         	        {
         	            creep.moveTo(creep.room.controller);
-        	        }   
+        	        }
         	    }
     	    }
     	}
