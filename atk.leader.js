@@ -33,15 +33,15 @@ module.exports = {
           {
             rnd = Math.floor((Math.random() * 100) + 1);
 
-            if (rnd <= 1)
+            if (rnd <= 10)
             {
               console.log(creep.name + " is returning home.");
               posRoom = "W22N41";
             }
-            else if (rnd <= 6)
+            else if (rnd <= 30)
             {
               var curRoom = posRoom;
-              
+
               var l1 = curRoom.substring(0,1);
               var n1 = curRoom.substring(1,3);
               var l2 = curRoom.substring(3,4);
@@ -66,8 +66,8 @@ module.exports = {
               }
 
               var newRoom = l1 + (n1Int + r1) + l2 + (n2Int + r2);
-              console.log(creep.name + " is moving to new room " + newRoom);
               posRoom = newRoom;
+              console.log(creep.name + " currently in " + creep.room.name + " is moving to new room " + posRoom);
             }
           }
 
@@ -80,12 +80,12 @@ module.exports = {
 
           if (dist <= 1)
           {
+            console.log("Reached target");
               creep.memory.movePos = undefined;
-              console.log(creep.name + " reached movePos target.");
           }
           else
           {
-            const np = new RoomPosition((creep.memory.movePos.x), (creep.memory.movePos.y), creep.room.name);
+            const np = new RoomPosition((creep.memory.movePos.x), (creep.memory.movePos.y), creep.memory.movePos.roomName);
             var mv = creep.moveTo(np);
 
             if (mv == ERR_INVALID_TARGET || mv == ERR_NO_PATH)
@@ -105,6 +105,8 @@ module.exports = {
       }
       else
       {
+        creep.memory.movePos = undefined;
+
         if (creep.memory.role == "rangedleader")
         {
           var a = creep.rangedAttack(enemy);

@@ -3,31 +3,21 @@ var roleRepairer = require('role.repairer');
 var conTower = require('atk.tower');
 var atkLeader = require('atk.leader');
 var atkSoldier = require('atk.soldier');
+var roleLongHarvester = require('role.longharvester');
 
 require('prototype.spawn')();
 
 module.exports.loop = function()
 {
-    var minHarvesters = 5;
-    var minRepairers = 1;
-    var minLeaders = 1;
-    var minSoldiers = 5;
+    var minHarvesters = 15;
+    var minRepairers = 3;
+    var minLeaders = 0;
+    var minSoldiers = 0;
+    var minLongHarvesters = 0;
 
-    var rnd = Math.floor((Math.random() * 10));
-
-    if (rnd <= 1)
-    {
-      spawnEnergy = (Game.spawns.Home1.room.energyCapacityAvailable * 0.3);
-    }
-    else if (rnd <= 3) {
-      spawnEnergy = (Game.spawns.Home1.room.energyCapacityAvailable * 0.6);
-    }
-    else if (rnd <= 5) {
-      spawnEnergy = (Game.spawns.Home1.room.energyCapacityAvailable * 0.8);
-    }
-    else {
-      spawnEnergy = (Game.spawns.Home1.room.energyCapacityAvailable);
-    }
+    var rnd = Math.floor((Math.random() * 50) + 1);
+    var xplier = (50 + rnd) / 100;
+    spawnEnergy = (Game.spawns.Home1.room.energyCapacityAvailable);
 
     // Clear creeps from memory.
     for (let c in Memory.creeps)
@@ -42,6 +32,7 @@ module.exports.loop = function()
     var repairerPop = _.sum(Game.creeps, (c) => c.memory.role == "repairer");
     var leaderPop = _.sum(Game.creeps, (c) => c.memory.role == "rangedleader" || c.memory.role == "leader");
     var soldierPop = _.sum(Game.creeps, (c) => c.memory.role == "rangedsoldier" || c.memory.role == "soldier");
+    var longPop = _.sum(Game.creeps, (c) => c.memory.role == "longharvester");
 
     var towers = Game.spawns.Home1.room.find(FIND_STRUCTURES, {
         filter: (t) => t.structureType == STRUCTURE_TOWER
@@ -59,6 +50,9 @@ module.exports.loop = function()
 	    if (creep.memory.role == "harvester")
 	    {
 	        roleHarvester.run(creep);
+          //creep.memory.canBuild = true;
+          //creep.memory.upgrading = false;
+          //creep.memory.currentSource = undefined;
 	    }
 	    else if (creep.memory.role == "repairer")
 	    {
@@ -72,8 +66,12 @@ module.exports.loop = function()
       {
         atkSoldier.run(creep);
       }
+      else if (creep.memory.role == "longharvester")
+      {
+        roleLongHarvester.run(creep);
+      }
 
-	    if (creep.ticksToLive == 5)
+	    if (creep.ticksToLive == 1)
 	    {
 	        console.log(name + " is dying.");
 	    }
@@ -104,5 +102,9 @@ module.exports.loop = function()
     {
         var newName = Game.spawns.Home1.customCreep(spawnEnergy, "repairer");
         //console.log("Repairer Spawn" + newName);
+    }
+    else if (longPop < minLongHarvesters)
+    {
+        var newName = Game.spawns.Home1.customCreep(spawnEnergy, "longharvester");
     }
 }
