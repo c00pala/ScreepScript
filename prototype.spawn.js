@@ -44,6 +44,50 @@ module.exports = function() {
 
                 return newName;
             }
+            else if (roleName == "longharvester")
+            {
+              var noOfWork = Math.floor((energy * 0.3) / 100);
+              energy -= (noOfWork * 100);
+              var noOfCarry = Math.floor((energy * 0.25) / 50);
+              var noOfMove = Math.floor((energy * 0.50) / 50);
+              energy -= ((noOfCarry * 50) + (noOfMove * 50));
+
+              var body = [];
+
+              for (let i = 0; i < noOfWork; i++)
+              {
+                  body.push(WORK);
+              }
+              for (let i = 0; i < noOfCarry; i++)
+              {
+                  body.push(CARRY);
+              }
+              for (let i = 0; i < noOfMove; i++)
+              {
+                  body.push(MOVE);
+              }
+
+              if (energy > 150)
+              {
+                body.push(ATTACK);
+                energy - 150;
+              }
+              if (energy > 250)
+              {
+                body.push(HEAL);
+              }
+
+              var newName;
+              newName = this.createCreep(body, "DistanceWorker #" + Memory.harvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'E17N12', sourceRoom: 'E16N12'});
+
+              if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
+              {
+                console.log("Created new long range harvester creep: " + newName);
+                  Memory.longHarvesterCount++;
+              }
+
+              return newName;
+            }
             else if (roleName == "repairer")
             {
                 var noOfWork = Math.floor((energy * 0.25) / 100);
@@ -165,41 +209,5 @@ module.exports = function() {
 
               return newName;
             }
-            else if (roleName == "longharvester")
-            {
-              energy -= 150;
-              energy -= 250;
-              var noOfWork = Math.floor((energy * 0.2) / 100);
-              var noOfCarry = Math.floor((energy * 0.2) / 50);
-              var noOfMove = Math.floor((energy * 0.6) / 50);
-              var body = [];
-
-              for (let i = 0; i < noOfWork; i++)
-              {
-                  body.push(WORK);
-              }
-              for (let i = 0; i < noOfCarry; i++)
-              {
-                  body.push(CARRY);
-              }
-              for (let i = 0; i < noOfMove; i++)
-              {
-                  body.push(MOVE);
-              }
-
-              body.push(ATTACK);
-              body.push(HEAL);
-
-              var newName;
-              newName = this.createCreep(body, "DistanceWorker #" + Memory.harvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: "E17N12", sourceRoom: "E16N12"});
-
-              if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
-              {
-                console.log("Created new long range harvester creep: " + newName);
-                  Memory.longHarvesterCount++;
-              }
-
-              return newName;
-            }
-        };
+        }
 };

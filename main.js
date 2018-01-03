@@ -13,7 +13,7 @@ module.exports.loop = function()
     var minRepairers = 3;
     var minLeaders = 0;
     var minSoldiers = 0;
-    var minLongHarvesters = 0;
+    var minLongHarvesters = 1;
 
     var rnd = Math.floor((Math.random() * 50) + 1);
     var xplier = (50 + rnd) / 100;
