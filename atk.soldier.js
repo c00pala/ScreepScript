@@ -40,7 +40,7 @@ module.exports = {
 
         var distToLeader = creep.pos.getRangeTo(creep.memory.leaderCreep.pos.x, creep.memory.leaderCreep.pos.y);
 
-        if (distToLeader > 2)
+        if (distToLeader > 5)
         {
           var x = Math.floor((Math.random() * 1) + 1);
           var y = Math.floor((Math.random() * 1) + 1);

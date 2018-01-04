@@ -36,21 +36,19 @@ module.exports = {
             if (rnd <= 10)
             {
               console.log(creep.name + " is returning home.");
-              posRoom = "W22N41";
+              posRoom = "W2N2";
             }
             else if (rnd <= 30)
             {
               var curRoom = posRoom;
 
               var l1 = curRoom.substring(0,1);
-              var n1 = curRoom.substring(1,3);
-              var l2 = curRoom.substring(3,4);
-              var n2 = curRoom.substring(4);
+              var n1 = curRoom.substring(1,2);
+              var l2 = curRoom.substring(2,3);
+              var n2 = curRoom.substring(3);
 
               var n1Int = parseInt(n1);
               var n2Int = parseInt(n2);
-
-              console.log(l1 + " " + l2 + " " + n1 + " " + n2 + " " + n1Int + " " + n2Int);
 
               var r1 = Math.floor((Math.random() * 1) + 1);
               var r2 = Math.floor((Math.random() * 1) + 1);
@@ -80,25 +78,26 @@ module.exports = {
 
           if (dist <= 1)
           {
-            console.log("Reached target");
+            console.log(creep.name + " has reached move target in room " + creep.room.name);
               creep.memory.movePos = undefined;
           }
           else
           {
             const np = new RoomPosition((creep.memory.movePos.x), (creep.memory.movePos.y), creep.memory.movePos.roomName);
-            var mv = creep.moveTo(np);
 
-            if (mv == ERR_INVALID_TARGET || mv == ERR_NO_PATH)
+            if (creep.room.name == creep.memory.movePos.roomName)
             {
-              if (mv == ERR_INVALID_TARGET)
+              var m = creep.moveTo(np);
+
+              if (m == ERR_NO_PATH)
               {
-                console.log("Invalid leader movePos target - " + creep.memory.movePos.x + " " + creep.memory.movePos.y);
+                creep.memory.movePos = undefined;
               }
-              else
-              {
-                console.log("No path to leader movePos target - " + creep.memory.movePos.x + " " + creep.memory.movePos.y);
-              }
-              creep.memory.movePos = undefined;
+            }
+            else
+            {
+                var exit = creep.room.findExitTo(creep.memory.movePos.roomName);
+                creep.moveTo(creep.pos.findClosestByRange(exit));
             }
           }
         }

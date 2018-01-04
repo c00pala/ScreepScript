@@ -33,7 +33,16 @@ module.exports = {
         {
           if (creep.room.name == creep.memory.home)
           {
-            if (creep.memory.upgrading == false)
+            var closestConstSite = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+
+      	    if (closestConstSite != undefined)
+      	    {
+      	        if (creep.build(closestConstSite) == ERR_NOT_IN_RANGE)
+      	        {
+      	            creep.moveTo(closestConstSite);
+      	        }
+      	    }
+            else if (creep.memory.upgrading == false)
             {
                 var energyStructure = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
                     filter: (e) =>

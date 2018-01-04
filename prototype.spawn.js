@@ -27,7 +27,7 @@ module.exports = function() {
                 var rnd = Math.floor((Math.random() * 10) + 1);
                 var newName;
 
-                if (rnd > 7)
+                if (rnd > 5)
                 {
                     newName = this.createCreep(body, "Worker #" + Memory.harvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, canBuild: false});
                 }
@@ -78,7 +78,15 @@ module.exports = function() {
               }
 
               var newName;
-              newName = this.createCreep(body, "DistanceWorker #" + Memory.harvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'E17N12', sourceRoom: 'E16N12'});
+              var rnd = Math.floor((Math.random() * 2));
+              if (rnd == 0)
+              {
+                newName = this.createCreep(body, "DistanceWorker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W2N2', sourceRoom: 'W2N1'});
+              }
+              else
+              {
+                newName = this.createCreep(body, "DistanceWorker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W2N2', sourceRoom: 'W3N1'});
+              }
 
               if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
               {
@@ -90,8 +98,9 @@ module.exports = function() {
             }
             else if (roleName == "repairer")
             {
-                var noOfWork = Math.floor((energy * 0.25) / 100);
-                var noOfCarry = Math.floor((energy * 0.25) / 50);
+                var noOfWork = Math.floor((energy * 0.35) / 100);
+                energy -= noOfWork * 100;
+                var noOfCarry = Math.floor((energy * 0.5) / 50);
                 var noOfMove = Math.floor((energy * 0.5) / 50);
                 var body = [];
 
@@ -119,9 +128,10 @@ module.exports = function() {
             }
             else if (roleName == "rangedleader")
             {
-                var noOfRangedAttack = Math.floor((energy * 0.35) / 150);
-                var noOfTough = Math.floor((energy * 0.05) / 10);
-                var noOfMove = Math.floor((energy * 0.6) / 50);
+                var noOfRangedAttack = Math.floor((energy * 0.5) / 150);
+                energy -= noOfRangedAttack * 150;
+                var noOfTough = Math.floor((energy * 0.2) / 10);
+                var noOfMove = Math.floor((energy * 0.8) / 50);
                 var body = [];
 
                 for (let i = 0; i < noOfRangedAttack; i++)
@@ -148,9 +158,10 @@ module.exports = function() {
             }
             else if (roleName == "leader")
             {
-              var noOfAttack = Math.floor((energy * 0.35) / 150);
-              var noOfTough = Math.floor((energy * 0.05) / 10);
-              var noOfMove = Math.floor((energy * 0.45) / 50);
+              var noOfAttack = Math.floor((energy * 0.5) / 150);
+              energy -= noOfAttack * 150;
+              var noOfTough = Math.floor((energy * 0.2) / 10);
+              var noOfMove = Math.floor((energy * 0.8) / 50);
               var body = [];
 
               for (let i = 0; i < noOfAttack; i++)
@@ -166,8 +177,6 @@ module.exports = function() {
                   body.push(MOVE);
               }
 
-              body.push(HEAL);
-
               var newName = this.createCreep(body, "RangedLeader #" + Memory.leaderCount + " - mk" + body.length, {role: roleName, movePos: undefined});
 
               if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
@@ -180,10 +189,17 @@ module.exports = function() {
             }
             else if (roleName == "rangedsoldier")
             {
-              var noOfRangedAttack = Math.floor((energy * 0.35) / 150);
+              var noOfRangedAttack = Math.floor((energy * 0.5) / 150);
+              energy -= noOfRangedAttack * 150;
               var noOfTough = Math.floor((energy * 0.05) / 10);
-              var noOfMove = Math.floor((energy * 0.45) / 50);
+              var noOfMove = Math.floor((energy * 0.5) / 50);
+              energy -= ((noOfTough * 10) + (noOfMove * 50));
               var body = [];
+
+              if (energy >= 250)
+              {
+                body.push(HEAL);
+              }
 
               for (let i = 0; i < noOfRangedAttack; i++)
               {
@@ -197,8 +213,6 @@ module.exports = function() {
               {
                   body.push(MOVE);
               }
-
-              body.push(HEAL);
 
               var newName = this.createCreep(body, "RangedSoldier #" + Memory.soldierCount + " - mk" + body.length, {role: roleName});
               if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
