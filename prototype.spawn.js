@@ -71,17 +71,23 @@ module.exports = function() {
                   body.push(MOVE);
               }
 
-              if (energy >= 150)
+              if (energy >= 80)
               {
                 body.push(ATTACK);
-                energy - 150;
+                energy -= 80;
                 noOfAttack++;
               }
+
               if (energy >= 250)
               {
                 body.push(HEAL);
                 noOfHeal++;
               }
+
+              /*for (i = 0; i < body.length; i++)
+              {
+                  console.log(body[i]);
+              }*/
 
               var newName;
               var rnd = Math.floor((Math.random() * 4));
@@ -105,7 +111,7 @@ module.exports = function() {
               if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
               {
                 console.log("Creep spawned: " + newName);
-                console.log("Cost: " + ((noOfWork * 100) + (noOfCarry * 50) + (noOfMove * 50)) + (noOfAttack * 150) + (noOfHeal * 250) + " energy.");
+                console.log("Cost: " + ((noOfWork * 100) + (noOfCarry * 50) + (noOfMove * 50) + (noOfAttack * 80) + (noOfHeal * 250)) + " energy.");
                   Memory.longHarvesterCount++;
               }
 
