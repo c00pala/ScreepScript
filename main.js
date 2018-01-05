@@ -10,10 +10,10 @@ require('prototype.spawn')();
 module.exports.loop = function()
 {
     var minHarvesters = 6;
-    var minRepairers = 3;
-    var minLeaders = 1;
-    var minSoldiers = 3;
-    var minLongHarvesters = 4;
+    var minRepairers = 2;
+    var minLeaders = 0;
+    var minSoldiers = 0;
+    var minLongHarvesters = 20;
 
     var rnd = Math.floor((Math.random() * 50) + 1);
     var xplier = (50 + rnd) / 100;

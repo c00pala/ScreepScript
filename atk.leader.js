@@ -33,7 +33,7 @@ module.exports = {
           {
             rnd = Math.floor((Math.random() * 100) + 1);
 
-            if (rnd <= 10)
+            if (rnd <= 3)
             {
               console.log(creep.name + " is returning home.");
               posRoom = "W2N2";
@@ -97,7 +97,7 @@ module.exports = {
             else
             {
                 var exit = creep.room.findExitTo(creep.memory.movePos.roomName);
-                creep.moveTo(creep.pos.findClosestByRange(exit));
+                creep.moveTo(creep.pos.findClosestByPath(exit));
             }
           }
         }

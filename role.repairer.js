@@ -28,7 +28,7 @@ module.exports = {
             }
             else
             {
-                var source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+                var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
           	    if (creep.harvest(source) == ERR_NOT_IN_RANGE)
           	    {
           	        creep.moveTo(source);
@@ -60,6 +60,13 @@ module.exports = {
         	        {
         	            creep.moveTo(repSite);
         	        }
+                }
+                else
+                {
+                  if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
+                  {
+                      creep.moveTo(creep.room.controller);
+                  }
                 }
     	    }
         }

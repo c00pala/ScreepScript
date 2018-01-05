@@ -9,7 +9,6 @@ module.exports = {
       if (creep.memory.leaderInt == -1 || creep.memory.leaderInt == undefined)
       {
           creep.memory.leaderInt = Math.floor((Math.random() * _.sum(Game.creeps, (c) => c.memory.role == "rangedleader" || c.memory.role == "leader")));
-          console.log(creep.memory.leaderInt);
       }
 
       var allLeads = [];
@@ -28,7 +27,6 @@ module.exports = {
 
       if (creep.memory.leaderCreep == undefined)
       {
-        console.log(creep.name + " cannot find leader. Searching for new.");
         creep.memory.leaderInt = -1;
       }
       else

@@ -81,7 +81,7 @@ module.exports = {
         {
           if (creep.room.name == creep.memory.sourceRoom)
           {
-            var source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+            var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 
             if (creep.harvest(source) == ERR_NOT_IN_RANGE)
             {
@@ -91,7 +91,7 @@ module.exports = {
           else
           {
               var exit = creep.room.findExitTo(creep.memory.sourceRoom);
-              creep.moveTo(creep.pos.findClosestByRange(exit));
+              creep.moveTo(creep.pos.findClosestByPath(exit));
           }
         }
       }

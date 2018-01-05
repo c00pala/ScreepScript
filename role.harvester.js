@@ -72,7 +72,7 @@ module.exports = {
     	}
     	else
     	{
-        var newSource = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+        var newSource = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
         var h = creep.harvest(newSource);
 
         if (h != ERR_NOT_ENOUGH_RESOURCES && h != ERR_INVALID_TARGET)

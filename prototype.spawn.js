@@ -38,7 +38,8 @@ module.exports = function() {
 
                 if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
                 {
-                  console.log("Created new harvester creep: " + newName);
+                  console.log("Creep spawned: " + newName);
+                  console.log("Cost: " + ((noOfWork * 100) + (noOfCarry * 50) + (noOfMove * 50)) + " energy.");
                     Memory.harvesterCount++;
                 }
 
@@ -51,6 +52,9 @@ module.exports = function() {
               var noOfCarry = Math.floor((energy * 0.25) / 50);
               var noOfMove = Math.floor((energy * 0.50) / 50);
               energy -= ((noOfCarry * 50) + (noOfMove * 50));
+
+              var noOfAttack = 0;
+              var noOfHeal = 0;
 
               var body = [];
 
@@ -67,30 +71,41 @@ module.exports = function() {
                   body.push(MOVE);
               }
 
-              if (energy > 150)
+              if (energy >= 150)
               {
                 body.push(ATTACK);
                 energy - 150;
+                noOfAttack++;
               }
-              if (energy > 250)
+              if (energy >= 250)
               {
                 body.push(HEAL);
+                noOfHeal++;
               }
 
               var newName;
-              var rnd = Math.floor((Math.random() * 2));
+              var rnd = Math.floor((Math.random() * 4));
               if (rnd == 0)
               {
-                newName = this.createCreep(body, "DistanceWorker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W2N2', sourceRoom: 'W2N1'});
+                newName = this.createCreep(body, "W8N2-Worker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W8N3', sourceRoom: 'W8N2'});
+              }
+              else if (rnd == 1)
+              {
+                newName = this.createCreep(body, "W7N3-Worker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W8N3', sourceRoom: 'W7N3'});
+              }
+              else if (rnd == 2)
+              {
+                newName = this.createCreep(body, "W7N2-Worker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W8N3', sourceRoom: 'W7N2'});
               }
               else
               {
-                newName = this.createCreep(body, "DistanceWorker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W2N2', sourceRoom: 'W3N1'});
+                newName = this.createCreep(body, "W7N2-Worker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W8N3', sourceRoom: 'W7N4'});
               }
 
               if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
               {
-                console.log("Created new long range harvester creep: " + newName);
+                console.log("Creep spawned: " + newName);
+                console.log("Cost: " + ((noOfWork * 100) + (noOfCarry * 50) + (noOfMove * 50)) + (noOfAttack * 150) + (noOfHeal * 250) + " energy.");
                   Memory.longHarvesterCount++;
               }
 
@@ -120,7 +135,8 @@ module.exports = function() {
                 var newName = this.createCreep(body, "Repairer #" + Memory.repairerCount + " - mk" + body.length, {role: roleName, gathering: false});
                 if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
                 {
-                  console.log("Created new repairer creep: " + newName);
+                  console.log("Creep spawned: " + newName);
+                  console.log("Cost: " + ((noOfWork * 100) + (noOfCarry * 50) + (noOfMove * 50)) + " energy.");
                     Memory.repairerCount++;
                 }
 
@@ -150,7 +166,8 @@ module.exports = function() {
                 var newName = this.createCreep(body, "RangedLeader #" + Memory.leaderCount + " - mk" + body.length, {role: roleName, movePos: undefined});
                 if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
                 {
-                  console.log("Created new rangedleader creep: " + newName);
+                  console.log("Creep spawned: " + newName);
+                  console.log("Cost: " + ((noOfRangedAttack * 150) + (noOfTough * 10) + (noOfMove * 50)) + " energy.");
                     Memory.leaderCount++;
                 }
 
@@ -181,7 +198,8 @@ module.exports = function() {
 
               if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
               {
-                console.log("Created new rangedleader creep: " + newName);
+                console.log("Creep spawned: " + newName);
+                console.log("Cost: " + ((noOfAttack * 150) + (noOfTough * 10) + (noOfMove * 50)) + " energy.");
                   Memory.leaderCount++;
               }
 
@@ -194,12 +212,10 @@ module.exports = function() {
               var noOfTough = Math.floor((energy * 0.05) / 10);
               var noOfMove = Math.floor((energy * 0.5) / 50);
               energy -= ((noOfTough * 10) + (noOfMove * 50));
-              var body = [];
 
-              if (energy >= 250)
-              {
-                body.push(HEAL);
-              }
+              var noOfHeal = 0;
+
+              var body = [];
 
               for (let i = 0; i < noOfRangedAttack; i++)
               {
@@ -214,10 +230,17 @@ module.exports = function() {
                   body.push(MOVE);
               }
 
+              if (energy >= 250)
+              {
+                body.push(HEAL);
+                noOfHeal++;
+              }
+
               var newName = this.createCreep(body, "RangedSoldier #" + Memory.soldierCount + " - mk" + body.length, {role: roleName});
               if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
               {
-                console.log("Created new rangedsoldier creep: " + newName);
+                console.log("Creep spawned: " + newName);
+                console.log("Cost: " + ((noOfRangedAttack * 150) + (noOfTough * 10) + (noOfMove * 50) + (noOfHeal * 250)) + " energy.");
                   Memory.soldierCount++;
               }
 
