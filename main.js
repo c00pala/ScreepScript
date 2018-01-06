@@ -3,17 +3,17 @@ var roleRepairer = require('role.repairer');
 var conTower = require('atk.tower');
 var atkLeader = require('atk.leader');
 var atkSoldier = require('atk.soldier');
-var roleLongHarvester = require('role.longharvester');
+var roleCollector = require('role.collector');
 
 require('prototype.spawn')();
 
 module.exports.loop = function()
 {
-    var minHarvesters = 6;
-    var minRepairers = 2;
+    var minHarvesters = 2;
+    var minRepairers = 5;
     var minLeaders = 0;
     var minSoldiers = 0;
-    var minLongHarvesters = 20;
+    var minLongHarvesters = 10;
 
     var rnd = Math.floor((Math.random() * 50) + 1);
     var xplier = (50 + rnd) / 100;
@@ -27,6 +27,16 @@ module.exports.loop = function()
             delete Memory.creeps[c];
         }
     }
+
+    /*
+    // Remove all cSites in a room.
+    var allCSites = Game.rooms.W7N3.find(FIND_CONSTRUCTION_SITES);
+    for (var r in allCSites)
+    {
+      var cSite = allCSites[r];
+      cSite.remove();
+    }
+    */
 
     var harvesterPop = _.sum(Game.creeps, (c) => c.memory.role == "harvester");
     var repairerPop = _.sum(Game.creeps, (c) => c.memory.role == "repairer");
@@ -68,7 +78,7 @@ module.exports.loop = function()
       }
       else if (creep.memory.role == "longharvester")
       {
-        roleLongHarvester.run(creep);
+        roleCollector.run(creep);
       }
 
 	    if (creep.ticksToLive == 1)
@@ -77,34 +87,33 @@ module.exports.loop = function()
 	    }
 	}
 
-	if (harvesterPop < minHarvesters)
-    {
-        var newName = Game.spawns.Home1.customCreep(spawnEnergy, "harvester");
+  if (harvesterPop < minHarvesters)
+  {
+      var newName = Game.spawns.Home1.customCreep(spawnEnergy, "harvester");
 
-        if (harvesterPop == 0)
-        {
-            newName = Game.spawns.Home1.customCreep(Game.spawns.Home1.room.energyAvailable, "harvester");
-        }
-
-        //console.log("Harvester Spawn" + newName);
-    }
-    else if (leaderPop < minLeaders)
-    {
-      var newName = Game.spawns.Home1.customCreep(spawnEnergy, "rangedleader");
-      //console.log("RangedLeader Spawn" + newName);
-    }
-    else if (soldierPop < minSoldiers)
-    {
-      var newName = Game.spawns.Home1.customCreep(spawnEnergy, "rangedsoldier");
-      //console.log("RangedSoldier Spawn" + newName);
-    }
-    else if (repairerPop < minRepairers)
-    {
-        var newName = Game.spawns.Home1.customCreep(spawnEnergy, "repairer");
-        //console.log("Repairer Spawn" + newName);
-    }
-    else if (longPop < minLongHarvesters)
-    {
-        var newName = Game.spawns.Home1.customCreep(spawnEnergy, "longharvester");
-    }
+      if (harvesterPop == 0)
+      {
+          newName = Game.spawns.Home1.customCreep(Game.spawns.Home1.room.energyAvailable, "harvester");
+      }
+      //console.log("Harvester Spawn" + newName);
+  }
+  else if (longPop < minLongHarvesters)
+  {
+      var newName = Game.spawns.Home1.customCreep(spawnEnergy, "longharvester");
+  }
+  else if (leaderPop < minLeaders)
+  {
+    var newName = Game.spawns.Home1.customCreep(spawnEnergy, "rangedleader");
+    //console.log("RangedLeader Spawn" + newName);
+  }
+  else if (soldierPop < minSoldiers)
+  {
+    var newName = Game.spawns.Home1.customCreep(spawnEnergy, "rangedsoldier");
+    //console.log("RangedSoldier Spawn" + newName);
+  }
+  else if (repairerPop < minRepairers)
+  {
+      var newName = Game.spawns.Home1.customCreep(spawnEnergy, "repairer");
+      //console.log("Repairer Spawn" + newName);
+  }
 }

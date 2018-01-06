@@ -29,11 +29,11 @@ module.exports = function() {
 
                 if (rnd > 5)
                 {
-                    newName = this.createCreep(body, "Worker #" + Memory.harvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, canBuild: false});
+                    newName = this.createCreep(body, "Worker #" + Memory.harvesterCount + " - mk" + body.length, {role: roleName, gathering: false, canBuild: false});
                 }
                 else
                 {
-                    newName = this.createCreep(body, "Builder #" + Memory.harvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, canBuild: true});
+                    newName = this.createCreep(body, "Builder #" + Memory.harvesterCount + " - mk" + body.length, {role: roleName, gathering: false, canBuild: true});
                 }
 
                 if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
@@ -89,24 +89,10 @@ module.exports = function() {
                   console.log(body[i]);
               }*/
 
+              var homeRoom = 'W8N3';
+
               var newName;
-              var rnd = Math.floor((Math.random() * 4));
-              if (rnd == 0)
-              {
-                newName = this.createCreep(body, "W8N2-Worker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W8N3', sourceRoom: 'W8N2'});
-              }
-              else if (rnd == 1)
-              {
-                newName = this.createCreep(body, "W7N3-Worker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W8N3', sourceRoom: 'W7N3'});
-              }
-              else if (rnd == 2)
-              {
-                newName = this.createCreep(body, "W7N2-Worker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W8N3', sourceRoom: 'W7N2'});
-              }
-              else
-              {
-                newName = this.createCreep(body, "W7N2-Worker #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, ungrading: false, home: 'W8N3', sourceRoom: 'W7N4'});
-              }
+              newName = this.createCreep(body, "Collector #" + Memory.longHarvesterCount + " - mk" + body.length, {role: roleName, gathering: false, home: homeRoom});
 
               if (newName != ERR_NOT_ENOUGH_ENERGY && newName != ERR_BUSY)
               {

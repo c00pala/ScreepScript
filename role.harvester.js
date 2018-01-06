@@ -25,61 +25,53 @@ module.exports = {
     	    }
     	    else
     	    {
-    	        if (creep.memory.upgrading == false)
-        	    {
-        	        var energyStructure = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
-        	            filter: (e) =>
-        	            (e.structureType == STRUCTURE_SPAWN || e.structureType == STRUCTURE_EXTENSION || e.structureType == STRUCTURE_TOWER)
-        	            && e.energy < e.energyCapacity
-        	        });
+            var energyStructure = creep.pos.findClosestByRange(FIND_MY_STRUCTURES, {
+                filter: (e) =>
+                (e.structureType == STRUCTURE_SPAWN || e.structureType == STRUCTURE_EXTENSION || e.structureType == STRUCTURE_TOWER)
+                && e.energy < e.energyCapacity
+            });
 
-        	        if (energyStructure != undefined)
-        	        {
-        	            if (creep.transfer(energyStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
-        	            {
-        	                creep.moveTo(energyStructure);
-        	            }
-        	        }
-        	        else
-        	        {
-        	            var containerStructure = creep.pos.findClosestByRange(FIND_STRUCTURES, {
-    	                filter: (s) =>
-    	                s.structureType == STRUCTURE_CONTAINER
-    	                && s.store[RESOURCE_ENERGY] < s.storeCapacity
-        	            });
-
-        	            if (containerStructure != undefined)
-        	            {
-        	                if (creep.transfer(containerStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
-        	                {
-        	                    creep.moveTo(containerStructure);
-        	                }
-        	            }
-        	            else
-        	            {
-        	                creep.memory.upgrading = true;
-        	            }
-        	        }
-        	    }
-        	    else
-        	    {
-        	        if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
-        	        {
-        	            creep.moveTo(creep.room.controller);
-        	        }
-        	    }
+            if (energyStructure != undefined)
+            {
+                if (creep.transfer(energyStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(energyStructure);
+                }
+            }
+            else
+            {
+              if (creep.upgradeController(creep.room.controller) == ERR_NOT_IN_RANGE)
+              {
+                  creep.moveTo(creep.room.controller);
+              }
+            }
     	    }
     	}
     	else
     	{
-        var newSource = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-        var h = creep.harvest(newSource);
+        var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
 
-        if (h != ERR_NOT_ENOUGH_RESOURCES && h != ERR_INVALID_TARGET)
+        if (source == undefined)
         {
-          if (h == ERR_NOT_IN_RANGE)
+          var containerStructure = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+          filter: (c) =>
+          (c.structureType == STRUCTURE_CONTAINER || c.structureType == STRUCTURE_STORAGE)
+          && c.store[RESOURCE_ENERGY] > 0
+          });
+
+          if (containerStructure != undefined)
           {
-              var m = creep.moveTo(newSource);
+              if (creep.withdraw(containerStructure, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+              {
+                  creep.moveTo(containerStructure);
+              }
+          }
+        }
+        else
+        {
+          if (creep.harvest(source) == ERR_NOT_IN_RANGE)
+          {
+              creep.moveTo(source);
           }
         }
     }

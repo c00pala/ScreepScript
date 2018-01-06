@@ -1,9 +1,11 @@
 module.exports = {
-
-    run: function(s)
+    run: function(tower)
     {
-        var enemy = s.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        s.attack(enemy);
-    }
+        var enemy = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
 
+        if (enemy != undefined && tower.energy > 10)
+        {
+            tower.attack(enemy);
+        }
+    }
 };
