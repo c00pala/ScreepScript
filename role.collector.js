@@ -37,12 +37,15 @@ module.exports = {
         }
         else
         {
-          if (ConstructionCheck(creep) == false)
+          if (RepairRoadCheck(creep) == false)
           {
-            BuildRoad(creep);
+            if (ConstructionCheck(creep) == false)
+            {
+              BuildRoad(creep);
 
-            var exit = exits[Math.floor(Math.random() * exits.length)];
-            FindExit(creep, exit, true);
+              var exit = exits[Math.floor(Math.random() * exits.length)];
+              FindExit(creep, exit, true);
+            }
           }
         }
       }
@@ -51,7 +54,32 @@ module.exports = {
 
 function BuildRoad(creep)
 {
-  var c = creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD);
+  creep.room.createConstructionSite(creep.pos, STRUCTURE_ROAD);
+};
+
+function RepairRoadCheck(creep)
+{
+  var repFound = false;
+
+  var repSite = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+    filter: (rep) => (rep.hits < rep.hitsMax) && rep.structureType == STRUCTURE_ROAD
+  });
+
+  if (repSite != undefined)
+  {
+    if (creep.pos.getRangeTo(repSite) <= 0)
+    {
+      repFound = true;
+      creep.memory.currentExit = undefined;
+
+      if (creep.repair(repSite) == ERR_NOT_IN_RANGE)
+      {
+          creep.moveTo(repSite);
+      }
+    }
+  }
+
+  return repFound;
 };
 
 function ContainerCheck(creep)

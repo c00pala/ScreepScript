@@ -9,8 +9,8 @@ require('prototype.spawn')();
 
 module.exports.loop = function()
 {
-    var minHarvesters = 2;
-    var minRepairers = 5;
+    var minHarvesters = 4;
+    var minRepairers = 3;
     var minLeaders = 0;
     var minSoldiers = 0;
     var minLongHarvesters = 10;
@@ -30,7 +30,7 @@ module.exports.loop = function()
 
     /*
     // Remove all cSites in a room.
-    var allCSites = Game.rooms.W7N3.find(FIND_CONSTRUCTION_SITES);
+    var allCSites = Game.rooms.W8N2.find(FIND_CONSTRUCTION_SITES);
     for (var r in allCSites)
     {
       var cSite = allCSites[r];
@@ -93,7 +93,7 @@ module.exports.loop = function()
 
       if (harvesterPop == 0)
       {
-          newName = Game.spawns.Home1.customCreep(Game.spawns.Home1.room.energyAvailable, "harvester");
+          newName = Game.spawns.Home1.customCreep(Game.spawns.Home1.energyCapacity, "harvester");
       }
       //console.log("Harvester Spawn" + newName);
   }
