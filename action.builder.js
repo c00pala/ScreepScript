@@ -9,7 +9,7 @@
     {
         if (creep.build(cs) == ERR_NOT_IN_RANGE)
         {
-            cree.moveTo(cs);
+            creep.moveTo(cs);
         }
     },
 
