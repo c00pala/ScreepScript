@@ -7,13 +7,22 @@ module.exports = {
         let canSay = action.CountTick(creep);
 
         if (harvestAction.Gathering(creep) == true) {
-            let source = harvestAction.GetSource(creep);
-            if (source != undefined) {
+            let container = harvestAction.GetFullContainer(creep);
+            if (container != undefined)
+            {
                 if (canSay) creep.say("⚡");
-                harvestAction.Harvest(creep, source);
+                harvestAction.Withdraw(creep, container);
             }
-            else {
-                if (canSay) creep.say("⚡ ✖️ 👀");
+            else
+            {
+                let source = harvestAction.GetSource(creep);
+                if (source != undefined) {
+                    if (canSay) creep.say("⚡");
+                    harvestAction.Harvest(creep, source);
+                }
+                else {
+                    if (canSay) creep.say("⚡ ✖️ 👀");
+                }
             }
         }
         else

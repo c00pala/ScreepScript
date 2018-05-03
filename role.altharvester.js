@@ -15,17 +15,17 @@ module.exports = {
             }
         }
         else {
-            let es = action.GetES(creep);
-
-            if (es != undefined) {
+            let container = action.GetContainer(creep);
+            if (container != null) {
                 if (canSay) creep.say("🔌");
-                action.Transfer(creep, es);
+                action.Transfer(creep, container);
             }
             else {
-                let container = action.GetContainer(creep);
-                if (container != null) {
+                let es = action.GetES(creep);
+
+                if (es != undefined) {
                     if (canSay) creep.say("🔌");
-                    action.Transfer(creep, container);
+                    action.Transfer(creep, es);
                 }
                 else {
                     if (canSay) creep.say("☢︎");

@@ -33,6 +33,27 @@
         return energyStructure;
     },
 
+    GetContainer: function (creep) {
+        let cont = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (c) => (c.structureType == STRUCTURE_CONTAINER) && c.store[RESOURCE_ENERGY] < c.storeCapacity
+        });
+        return cont;
+    },
+
+    GetFullContainer: function (creep) {
+        let cont = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (c) => (c.structureType == STRUCTURE_CONTAINER) && c.store[RESOURCE_ENERGY] > 0
+        });
+        return cont;
+    },
+
+    Withdraw: function (creep, container) {
+        if (creep.withdraw(container, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
+        {
+            creep.moveTo(container);
+        }
+    },
+
     Transfer: function (creep, es) {
         if (creep.transfer(es, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE)
         {
